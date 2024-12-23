@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: laravel-app
+        ports:
+            - "8000:8000"
+        volumes:
+            - .:/var/www/html
+        depends_on:
+            - db
+        environment:
+            # Ensure Laravel can talk to the DB
+            DB_HOST: db
+            DB_DATABASE: laravel
+            DB_USERNAME: laravel
+            DB_PASSWORD: secret
+
+    db:
+        image: mysql:8.0
+        container_name: laravel-db
+        environment:
+            MYSQL_DATABASE: laravel
+            MYSQL_USER: laravel
+            MYSQL_PASSWORD: secret
+            MYSQL_ROOT_PASSWORD: secret
+        ports:
+            - "3306:3306"
